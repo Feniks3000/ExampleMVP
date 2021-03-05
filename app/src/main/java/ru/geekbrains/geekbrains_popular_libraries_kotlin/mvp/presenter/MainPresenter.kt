@@ -7,16 +7,24 @@ class MainPresenter(val mainView: MainView) {
     val model = CountersModel
 
     init {
-        model.counters.forEachIndexed { i, _ ->
-            initButtonText(i)
-        }
+        initButtons()
     }
 
-    fun counterClick(id: Int) {
-        mainView.setButtonText(id, model.getNext(id).toString())
+    fun counter1Click() {
+        mainView.setButton1Text(model.getNext(0).toString())
     }
 
-    fun initButtonText(id: Int) {
-        mainView.setButtonText(id, model.getCurrent(id).toString())
+    fun counter2Click() {
+        mainView.setButton2Text(model.getNext(1).toString())
+    }
+
+    fun counter3Click() {
+        mainView.setButton3Text(model.getNext(2).toString())
+    }
+
+    fun initButtons() {
+        mainView.setButton1Text(model.getCurrent(0).toString())
+        mainView.setButton2Text(model.getCurrent(1).toString())
+        mainView.setButton3Text(model.getCurrent(2).toString())
     }
 }
