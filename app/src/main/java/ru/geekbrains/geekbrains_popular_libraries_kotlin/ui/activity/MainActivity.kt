@@ -12,16 +12,16 @@ class MainActivity : AppCompatActivity(), MainView {
     private val vb: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private lateinit var buttons: MutableList<Button>
 
-    private val presenter = MainPresenter(this)
+    private var presenter: MainPresenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(vb.root)
         buttons = mutableListOf(vb.btnCounter1, vb.btnCounter2, vb.btnCounter3)
 
+        presenter = MainPresenter(this)
         buttons.forEachIndexed { i, button ->
-            button.setOnClickListener { presenter.counterClick(i) }
-            presenter.initButtonText(i)
+            button.setOnClickListener { presenter?.counterClick(i) }
         }
     }
 
