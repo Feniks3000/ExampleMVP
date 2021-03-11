@@ -12,11 +12,7 @@ class UsersRVAdapter(val presenter: IUsersListPresenter) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
-            ItemUserBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
+            ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         ).apply {
             itemView.setOnClickListener { presenter.itemClickListener?.invoke(this) }
         }

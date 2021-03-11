@@ -15,5 +15,4 @@ class MainPresenter(val router: Router, val screens: IScreens) : MvpPresenter<Ma
     fun backClicked() {
         router.exit()
     }
-
 }

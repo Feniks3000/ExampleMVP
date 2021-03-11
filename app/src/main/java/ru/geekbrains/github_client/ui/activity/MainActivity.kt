@@ -10,24 +10,17 @@ import ru.geekbrains.github_client.mvp.presenter.MainPresenter
 import ru.geekbrains.github_client.mvp.view.MainView
 import ru.geekbrains.github_client.ui.App
 import ru.geekbrains.github_client.ui.BackClickListener
-import ru.geekbrains.github_client.ui.adapter.UsersRVAdapter
 import ru.geekbrains.github_client.ui.navigation.AndroidScreens
 
 class MainActivity : MvpAppCompatActivity(), MainView {
 
-    val navigator = AppNavigator(this, R.id.container)
-
-    private var vb: ActivityMainBinding? = null
-    private val presenter by moxyPresenter {
-        MainPresenter(App.instance.router, AndroidScreens())
-    }
-
-    private var adapter: UsersRVAdapter? = null
+    private val navigator = AppNavigator(this, R.id.container)
+    private val vb by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    private val presenter by moxyPresenter { MainPresenter(App.instance.router, AndroidScreens()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        vb = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(vb?.root)
+        setContentView(vb.root)
     }
 
     override fun onResumeFragments() {
@@ -41,12 +34,11 @@ class MainActivity : MvpAppCompatActivity(), MainView {
     }
 
     override fun onBackPressed() {
-        supportFragmentManager.fragments.forEach {
-            if(it is BackClickListener && it.backPressed()){
+        supportFragmentManager.fragments.forEach { fragment ->
+            if (fragment is BackClickListener && fragment.backPressed()) {
                 return
             }
         }
         presenter.backClicked()
     }
-
 }

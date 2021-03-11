@@ -7,6 +7,7 @@ import ru.geekbrains.github_client.mvp.model.entity.GithubUser
 import ru.geekbrains.github_client.mvp.presenter.list.IUsersListPresenter
 import ru.geekbrains.github_client.mvp.view.UsersView
 import ru.geekbrains.github_client.mvp.view.list.IUserItemView
+import ru.geekbrains.github_client.ui.navigation.AndroidScreens
 
 class UsersPresenter(val usersRepo: GithubUsersRepo, val router: Router) :
     MvpPresenter<UsersView>() {
@@ -32,7 +33,7 @@ class UsersPresenter(val usersRepo: GithubUsersRepo, val router: Router) :
 
         usersListPresenter.itemClickListener = { view ->
             val user = usersListPresenter.users[view.pos]
-            //router.navigateTo(screens.user(user))
+            router.navigateTo(AndroidScreens().user(user))
         }
     }
 
