@@ -4,12 +4,12 @@ import com.github.terrakok.cicerone.Router
 import moxy.MvpPresenter
 import ru.geekbrains.github_client.mvp.model.GithubUsersRepo
 import ru.geekbrains.github_client.mvp.model.entity.GithubUser
+import ru.geekbrains.github_client.mvp.navigation.IScreens
 import ru.geekbrains.github_client.mvp.presenter.list.IUsersListPresenter
 import ru.geekbrains.github_client.mvp.view.UsersView
 import ru.geekbrains.github_client.mvp.view.list.IUserItemView
-import ru.geekbrains.github_client.ui.navigation.AndroidScreens
 
-class UsersPresenter(val usersRepo: GithubUsersRepo, val router: Router) :
+class UsersPresenter(val usersRepo: GithubUsersRepo, val router: Router, val screens: IScreens) :
     MvpPresenter<UsersView>() {
 
     class UsersListPresenter : IUsersListPresenter {
@@ -33,7 +33,7 @@ class UsersPresenter(val usersRepo: GithubUsersRepo, val router: Router) :
 
         usersListPresenter.itemClickListener = { view ->
             val user = usersListPresenter.users[view.pos]
-            router.navigateTo(AndroidScreens().user(user))
+            router.navigateTo(screens.user(user))
         }
     }
 
