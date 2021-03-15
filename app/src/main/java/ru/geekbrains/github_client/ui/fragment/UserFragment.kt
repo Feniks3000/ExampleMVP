@@ -6,21 +6,25 @@ import android.view.ViewGroup
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.geekbrains.github_client.databinding.FragmentUserBinding
-import ru.geekbrains.github_client.mvp.model.GithubUsersRepo
 import ru.geekbrains.github_client.mvp.model.entity.GithubUser
 import ru.geekbrains.github_client.mvp.presenter.UserPresenter
 import ru.geekbrains.github_client.mvp.view.UserView
 import ru.geekbrains.github_client.ui.App
 import ru.geekbrains.github_client.ui.BackClickListener
 
-class UserFragment(val user: GithubUser) : MvpAppCompatFragment(), UserView, BackClickListener {
+class UserFragment : MvpAppCompatFragment(), UserView, BackClickListener {
 
     companion object {
-        fun newInstance(user: GithubUser) = UserFragment(user)
+        private const val USER = "user"
+        fun newInstance(user: GithubUser) = UserFragment().apply {
+            arguments = Bundle().apply {
+                putParcelable(USER, user)
+            }
+        }
     }
 
     private val presenter by moxyPresenter {
-        UserPresenter(GithubUsersRepo(), App.instance.router)
+        UserPresenter(App.instance.router, arguments?.get(USER) as GithubUser)
     }
 
     private var vb: FragmentUserBinding? = null
@@ -38,8 +42,8 @@ class UserFragment(val user: GithubUser) : MvpAppCompatFragment(), UserView, Bac
         vb = null
     }
 
-    override fun init() {
-        vb?.tvUser?.text = user.login
+    override fun setLogin(login: String) {
+        vb?.tvUser?.text = login
     }
 
 
