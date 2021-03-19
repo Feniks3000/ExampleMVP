@@ -1,5 +1,6 @@
 package ru.geekbrains.github_client.mvp.model
 
+import io.reactivex.rxjava3.core.Observable
 import ru.geekbrains.github_client.mvp.model.entity.GithubUser
 
 class GithubUsersRepo {
@@ -11,5 +12,5 @@ class GithubUsersRepo {
         GithubUser("login5")
     )
 
-    fun getUsers(): List<GithubUser> = users
+    fun getUsers(): Observable<GithubUser> = Observable.fromIterable(users)
 }
