@@ -1,15 +1,18 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.2"
 
     buildFeatures {
         viewBinding true
     }
+
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
 
     defaultConfig {
         applicationId "ru.geekbrains.geekbrains_popular_libraries_kotlin"
@@ -41,9 +44,16 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    testImplementation 'junit:junit:4.+'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    implementation 'com.github.terrakok:cicerone:6.6'
+
+    implementation "com.github.moxy-community:moxy:2.2.1"
+    kapt "com.github.moxy-community:moxy-compiler:2.1.2"
+    implementation "com.github.moxy-community:moxy-ktx:2.1.2"
+    implementation "com.github.moxy-community:moxy-androidx:2.1.2"
 }
