@@ -13,6 +13,7 @@ import ru.geekbrains.github_client.mvp.view.UsersView
 import ru.geekbrains.github_client.ui.App
 import ru.geekbrains.github_client.ui.BackClickListener
 import ru.geekbrains.github_client.ui.adapter.UsersRVAdapter
+import ru.geekbrains.github_client.ui.navigation.AndroidScreens
 
 class UsersFragment : MvpAppCompatFragment(), UsersView, BackClickListener {
 
@@ -21,7 +22,7 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackClickListener {
     }
 
     private val presenter by moxyPresenter {
-        UsersPresenter(GithubUsersRepo(), App.instance.router)
+        UsersPresenter(GithubUsersRepo(), App.instance.router, AndroidScreens())
     }
 
     private var vb: FragmentUsersBinding? = null
