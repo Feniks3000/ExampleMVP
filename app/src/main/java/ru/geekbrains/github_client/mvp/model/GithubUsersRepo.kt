@@ -13,5 +13,5 @@ class GithubUsersRepo {
         GithubUser("login5")
     )
 
-    fun getUsers() = Observable.fromIterable(users).subscribeOn(Schedulers.io())
+    fun getUsers() = Observable.just(users).subscribeOn(Schedulers.io())
 }

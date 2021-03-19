@@ -50,8 +50,8 @@ class UsersPresenter(
         usersListPresenter.users.clear()
         val disposable = usersRepo.getUsers()
             .observeOn(mainThread)
-            .subscribe({ user ->
-                usersListPresenter.users.add(user)
+            .subscribe({ users ->
+                usersListPresenter.users.addAll(users)
                 viewState.updateList()
             }, { exception ->
                 exception.printStackTrace()
