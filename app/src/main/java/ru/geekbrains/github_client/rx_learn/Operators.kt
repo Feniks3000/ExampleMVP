@@ -57,7 +57,8 @@ class Operators {
             //execMerge()
             //execDebounce()
             //execZip()
-            execFlatmap()
+            //execFlatmap()
+            execSwitchMap()
         }
 
         fun execMap() {
@@ -158,6 +159,24 @@ class Operators {
             testScheduler.advanceTimeBy(1, TimeUnit.MINUTES)
         }
 
-        //switchMap
+        fun execSwitchMap() {
+            val testScheduler = TestScheduler()
+            producer.just()
+                .switchMap {
+                    val delay = Random.nextInt(10).toLong()
+                    return@switchMap Observable.just(it + "x")
+                        .delay(delay, TimeUnit.SECONDS, testScheduler)
+                }
+                .toList()
+                .subscribe({ list ->
+                    println("onNext: $list")
+                }, {
+                    println("onError: ${it.message}")
+                })
+            // switchMap отписывается от предыдущего Observable, когда получает новый
+            // Поэтому после switchMap, примененного к just, мы получаем на выходе только Observable,
+            // основанный на последнем элементе just = 6x.
+            testScheduler.advanceTimeBy(1, TimeUnit.MINUTES)
+        }
     }
 }
