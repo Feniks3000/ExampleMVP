@@ -12,10 +12,10 @@ import ru.geekbrains.github_client.mvp.view.UsersView
 import ru.geekbrains.github_client.mvp.view.list.IUserItemView
 
 class UsersPresenter(
-    val usersRepo: IGithubUsersRepo,
-    val router: Router,
-    val screens: IScreens,
-    val mainThread: Scheduler
+    private val usersRepo: IGithubUsersRepo,
+    private val router: Router,
+    private val screens: IScreens,
+    private val mainThread: Scheduler
 ) :
     MvpPresenter<UsersView>() {
 
