@@ -6,4 +6,7 @@ import moxy.viewstate.strategy.alias.AddToEndSingle
 @AddToEndSingle
 interface UserView : MvpView {
     fun setLogin(login: String)
+    fun init()
+    fun updateList()
+    fun showMessage(message: String)
 }
