@@ -6,13 +6,13 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import moxy.MvpPresenter
 import ru.geekbrains.github_client.mvp.model.entity.GithubRepo
 import ru.geekbrains.github_client.mvp.model.entity.GithubUser
-import ru.geekbrains.github_client.mvp.model.repository.IGithubUsersRepo
+import ru.geekbrains.github_client.mvp.model.repository.IGithubRepositoriesRepo
 import ru.geekbrains.github_client.mvp.presenter.list.IReposListPresenter
 import ru.geekbrains.github_client.mvp.view.UserView
 import ru.geekbrains.github_client.mvp.view.list.IRepoItemView
 
 class UserPresenter(
-    private val usersRepo: IGithubUsersRepo,
+    private val repositoriesRepo: IGithubRepositoriesRepo,
     private val router: Router,
     private val mainThread: Scheduler,
     private val user: GithubUser
@@ -25,7 +25,7 @@ class UserPresenter(
 
         override fun bindView(view: IRepoItemView) {
             val repo = repos[view.pos]
-            view.setLanguage(repo.language?:"-")
+            view.setLanguage(repo.language ?: "-")
             view.setName(repo.name)
         }
 
@@ -51,7 +51,7 @@ class UserPresenter(
 
     fun loadData(url: String) {
         reposListPresenter.repos.clear()
-        val disposable = usersRepo.getUserRepos(url)
+        val disposable = repositoriesRepo.getUserRepos(url)
             .observeOn(mainThread)
             .subscribe({ repos ->
                 reposListPresenter.repos.addAll(repos)

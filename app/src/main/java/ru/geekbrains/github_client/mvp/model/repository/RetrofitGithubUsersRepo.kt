@@ -5,5 +5,4 @@ import ru.geekbrains.github_client.mvp.model.api.IDataSource
 
 class RetrofitGithubUsersRepo(val api: IDataSource) : IGithubUsersRepo {
     override fun getUsers() = api.getUsers().subscribeOn(Schedulers.io())
-    override fun getUserRepos(url: String) = api.getUserRepos(url).subscribeOn(Schedulers.io())
 }
