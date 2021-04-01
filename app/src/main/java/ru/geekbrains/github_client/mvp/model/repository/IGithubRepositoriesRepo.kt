@@ -1,8 +1,9 @@
 package ru.geekbrains.github_client.mvp.model.repository
 
 import io.reactivex.rxjava3.core.Single
-import ru.geekbrains.github_client.mvp.model.entity.GithubRepo
+import ru.geekbrains.github_client.mvp.model.entity.GithubRepository
+import ru.geekbrains.github_client.mvp.model.entity.GithubUser
 
 interface IGithubRepositoriesRepo {
-    fun getUserRepos(url: String): Single<List<GithubRepo>>
+    fun getRepositories(user: GithubUser): Single<List<GithubRepository>>
 }

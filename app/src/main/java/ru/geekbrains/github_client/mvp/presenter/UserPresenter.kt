@@ -4,59 +4,64 @@ import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import moxy.MvpPresenter
-import ru.geekbrains.github_client.mvp.model.entity.GithubRepo
+import ru.geekbrains.github_client.mvp.model.entity.GithubRepository
 import ru.geekbrains.github_client.mvp.model.entity.GithubUser
+import ru.geekbrains.github_client.mvp.model.navigation.IScreens
 import ru.geekbrains.github_client.mvp.model.repository.IGithubRepositoriesRepo
-import ru.geekbrains.github_client.mvp.presenter.list.IReposListPresenter
+import ru.geekbrains.github_client.mvp.presenter.list.IRepositoryListPresenter
 import ru.geekbrains.github_client.mvp.view.UserView
-import ru.geekbrains.github_client.mvp.view.list.IRepoItemView
+import ru.geekbrains.github_client.mvp.view.list.IRepositoryItemView
 
 class UserPresenter(
     private val repositoriesRepo: IGithubRepositoriesRepo,
     private val router: Router,
     private val mainThread: Scheduler,
-    private val user: GithubUser
+    private val user: GithubUser,
+    private val screens: IScreens
 ) :
     MvpPresenter<UserView>() {
 
-    class ReposListPresenter : IReposListPresenter {
-        val repos = mutableListOf<GithubRepo>()
-        override var itemClickListener: ((IRepoItemView) -> Unit)? = null
+    class RepositoriesListPresenter : IRepositoryListPresenter {
+        val repositories = mutableListOf<GithubRepository>()
+        override var itemClickListener: ((IRepositoryItemView) -> Unit)? = null
 
-        override fun bindView(view: IRepoItemView) {
-            val repo = repos[view.pos]
+        override fun bindView(view: IRepositoryItemView) {
+            val repo = repositories[view.pos]
             view.setLanguage(repo.language ?: "-")
             view.setName(repo.name)
         }
 
-        override fun getCount() = repos.size
+        override fun getCount() = repositories.size
     }
 
     val compositeDisposable = CompositeDisposable()
 
-    val reposListPresenter = ReposListPresenter()
+    val repositoriesListPresenter = RepositoriesListPresenter()
 
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         viewState.init()
         viewState.setLogin(user.login)
-        loadData(user.reposUrl)
+        loadData()
 
-        reposListPresenter.itemClickListener = { view ->
-            viewState.showMessage(reposListPresenter.repos[view.pos].id.toString())
+        repositoriesListPresenter.itemClickListener = { view ->
+            //viewState.showMessage(repositoriesListPresenter.repositories[view.pos].id)
+            val repository = repositoriesListPresenter.repositories[view.pos]
+            router.navigateTo(screens.repository(repository))
         }
 
     }
 
-    fun loadData(url: String) {
-        reposListPresenter.repos.clear()
-        val disposable = repositoriesRepo.getUserRepos(url)
+    fun loadData() {
+        repositoriesListPresenter.repositories.clear()
+        val disposable = repositoriesRepo.getRepositories(user)
             .observeOn(mainThread)
             .subscribe({ repos ->
-                reposListPresenter.repos.addAll(repos)
+                repositoriesListPresenter.repositories.addAll(repos)
                 viewState.updateList()
             }, { exception ->
+                println("Error: ${exception.message}")
                 exception.printStackTrace()
             })
         compositeDisposable.add(disposable)
