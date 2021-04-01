@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.geekbrains.github_client.databinding.ItemRepoBinding
-import ru.geekbrains.github_client.mvp.presenter.list.IReposListPresenter
-import ru.geekbrains.github_client.mvp.view.list.IRepoItemView
+import ru.geekbrains.github_client.mvp.presenter.list.IRepositoryListPresenter
+import ru.geekbrains.github_client.mvp.view.list.IRepositoryItemView
 
-class ReposRVAdapter(val presenter: IReposListPresenter) :
+class ReposRVAdapter(val presenter: IRepositoryListPresenter) :
     RecyclerView.Adapter<ReposRVAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
@@ -23,7 +23,7 @@ class ReposRVAdapter(val presenter: IReposListPresenter) :
         presenter.bindView(holder.apply { pos = position })
 
     inner class ViewHolder(val vb: ItemRepoBinding) : RecyclerView.ViewHolder(vb.root),
-        IRepoItemView {
+        IRepositoryItemView {
 
         override var pos = -1
 
