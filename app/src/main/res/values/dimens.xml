@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="user_avatar_width">50dp</dimen>
+    <dimen name="user_avatar_height">50dp</dimen>
+    <dimen name="user_avatar_margin_start">16dp</dimen>
+    <dimen name="user_avatar_margin_top">5dp</dimen>
+    <dimen name="user_avatar_margin_bottom">5dp</dimen>
+    <dimen name="user_login_margin_start">16dp</dimen>
+
+    <dimen name="repo_lang_width">0pt</dimen>
+    <dimen name="repo_lang_margin_start">16dp</dimen>
+    <dimen name="repo_name_width">0dp</dimen>
+    <dimen name="repo_name_margin_start">16dp</dimen>
+    <dimen name="rv_users_padding_top">16dp</dimen>
+    <dimen name="rv_users_padding_bottom">16dp</dimen>
+    <dimen name="rv_repos_padding_top">16dp</dimen>
+    <dimen name="rv_repos_padding_bottom">16dp</dimen>
+    <dimen name="tv_user_padding_top">16dp</dimen>
+</resources>
