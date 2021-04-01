@@ -9,6 +9,8 @@ import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.geekbrains.github_client.databinding.FragmentUsersBinding
 import ru.geekbrains.github_client.mvp.model.api.ApiHolder
+import ru.geekbrains.github_client.mvp.model.cache.room.RoomGithubUsersCache
+import ru.geekbrains.github_client.mvp.model.cache.room.RoomImageCache
 import ru.geekbrains.github_client.mvp.model.entity.room.db.Database
 import ru.geekbrains.github_client.mvp.model.repository.RetrofitGithubUsersRepo
 import ru.geekbrains.github_client.mvp.presenter.UsersPresenter
@@ -30,8 +32,8 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackClickListener {
         UsersPresenter(
             RetrofitGithubUsersRepo(
                 ApiHolder.api,
-                AndroidNetworkStatus(App.instance),
-                Database.getInstance()
+                AndroidNetworkStatus(requireContext()),
+                RoomGithubUsersCache(Database.getInstance())
             ), App.instance.router, AndroidScreens(), AndroidSchedulers.mainThread()
         )
     }
@@ -54,7 +56,13 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackClickListener {
 
     override fun init() {
         vb?.rvUsers?.layoutManager = LinearLayoutManager(requireContext())
-        adapter = UsersRVAdapter(presenter.usersListPresenter, GlideImageLoader())
+        adapter = UsersRVAdapter(
+            presenter.usersListPresenter, GlideImageLoader(
+                AndroidNetworkStatus(requireContext()),
+                RoomImageCache(Database.getInstance(), App.instance.cacheDir),
+                AndroidSchedulers.mainThread()
+            )
+        )
         vb?.rvUsers?.adapter = adapter
     }
 

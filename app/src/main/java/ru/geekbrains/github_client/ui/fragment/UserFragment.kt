@@ -10,6 +10,7 @@ import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.geekbrains.github_client.databinding.FragmentUserBinding
 import ru.geekbrains.github_client.mvp.model.api.ApiHolder
+import ru.geekbrains.github_client.mvp.model.cache.room.RoomGithubRepositoriesCache
 import ru.geekbrains.github_client.mvp.model.entity.GithubUser
 import ru.geekbrains.github_client.mvp.model.entity.room.db.Database
 import ru.geekbrains.github_client.mvp.model.repository.RetrofitGithubRepositoriesRepo
@@ -36,8 +37,8 @@ class UserFragment : MvpAppCompatFragment(), UserView, BackClickListener {
         UserPresenter(
             RetrofitGithubRepositoriesRepo(
                 ApiHolder.api,
-                AndroidNetworkStatus(App.instance),
-                Database.getInstance()
+                AndroidNetworkStatus(requireContext()),
+                RoomGithubRepositoriesCache(Database.getInstance())
             ),
             App.instance.router,
             AndroidSchedulers.mainThread(),
