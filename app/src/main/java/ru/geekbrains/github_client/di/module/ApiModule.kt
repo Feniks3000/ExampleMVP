@@ -12,39 +12,31 @@ import ru.geekbrains.github_client.mvp.model.api.IDataSource
 import ru.geekbrains.github_client.mvp.model.network.INetworkStatus
 import ru.geekbrains.github_client.ui.App
 import ru.geekbrains.github_client.ui.network.AndroidNetworkStatus
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
 class ApiModule {
 
-    @Named("baseUrl")
     @Provides
     fun baseUrl(): String = "https://api.github.com"
 
-    @Named("other")
-    @Provides
-    fun otherString(): String = "124124"
-
-    @Provides
     @Singleton
-    fun api(@Named("baseUrl") baseUrl: String, gson: Gson): IDataSource = Retrofit.Builder()
+    @Provides
+    fun api(baseUrl: String, gson: Gson): IDataSource = Retrofit.Builder()
         .baseUrl(baseUrl)
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         .addConverterFactory(GsonConverterFactory.create(gson))
         .build()
         .create(IDataSource::class.java)
 
-    
-    @Provides
     @Singleton
+    @Provides
     fun gson(): Gson = GsonBuilder()
         .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
         .excludeFieldsWithoutExposeAnnotation()
         .create()
 
-
-    @Provides
     @Singleton
+    @Provides
     fun networkStatus(app: App): INetworkStatus = AndroidNetworkStatus(app)
 }
