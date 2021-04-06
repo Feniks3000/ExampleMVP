@@ -14,7 +14,6 @@ import ru.geekbrains.github_client.mvp.view.list.IRepositoryItemView
 import javax.inject.Inject
 
 class UserPresenter(
-    private val repositoriesRepo: IGithubRepositoriesRepo,
     private val mainThread: Scheduler,
     private val user: GithubUser
 ) :
@@ -25,6 +24,9 @@ class UserPresenter(
 
     @Inject
     lateinit var screens: IScreens
+
+    @Inject
+    lateinit var repositoriesRepo: IGithubRepositoriesRepo
 
     class RepositoriesListPresenter : IRepositoryListPresenter {
         val repositories = mutableListOf<GithubRepository>()

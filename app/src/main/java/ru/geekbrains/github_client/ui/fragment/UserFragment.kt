@@ -9,17 +9,12 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.geekbrains.github_client.databinding.FragmentUserBinding
-import ru.geekbrains.github_client.mvp.model.api.ApiHolder
-import ru.geekbrains.github_client.mvp.model.cache.room.RoomGithubRepositoriesCache
 import ru.geekbrains.github_client.mvp.model.entity.GithubUser
-import ru.geekbrains.github_client.mvp.model.entity.room.db.Database
-import ru.geekbrains.github_client.mvp.model.repository.RetrofitGithubRepositoriesRepo
 import ru.geekbrains.github_client.mvp.presenter.UserPresenter
 import ru.geekbrains.github_client.mvp.view.UserView
 import ru.geekbrains.github_client.ui.App
 import ru.geekbrains.github_client.ui.BackClickListener
 import ru.geekbrains.github_client.ui.adapter.ReposRVAdapter
-import ru.geekbrains.github_client.ui.network.AndroidNetworkStatus
 
 class UserFragment : MvpAppCompatFragment(), UserView, BackClickListener {
 
@@ -34,11 +29,6 @@ class UserFragment : MvpAppCompatFragment(), UserView, BackClickListener {
 
     private val presenter by moxyPresenter {
         UserPresenter(
-            RetrofitGithubRepositoriesRepo(
-                ApiHolder.api,
-                AndroidNetworkStatus(requireContext()),
-                RoomGithubRepositoriesCache(Database.getInstance())
-            ),
             AndroidSchedulers.mainThread(),
             arguments?.get(USER) as GithubUser,
         ).apply {
