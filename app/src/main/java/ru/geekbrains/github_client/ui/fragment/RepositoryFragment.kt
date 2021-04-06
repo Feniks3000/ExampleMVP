@@ -27,12 +27,15 @@ class RepositoryFragment : MvpAppCompatFragment(), RepositoryView, BackClickList
 
     private var vb: FragmentRepositoryBinding? = null
 
-    val presenter: RepositoryPresenter by moxyPresenter {
-        val repository = arguments?.getParcelable<GithubRepository>(REPOSITORY_ARG) as GithubRepository
-        RepositoryPresenter(App.instance.router, repository)
+    val presenter by moxyPresenter {
+        RepositoryPresenter(arguments?.getParcelable<GithubRepository>(REPOSITORY_ARG) as GithubRepository)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ) =
         FragmentRepositoryBinding.inflate(inflater, container, false).also {
             vb = it
         }.root
@@ -40,7 +43,7 @@ class RepositoryFragment : MvpAppCompatFragment(), RepositoryView, BackClickList
     override fun init() {}
 
     override fun setId(text: String) {
-       vb?.tvId?.text = text
+        vb?.tvId?.text = text
     }
 
     override fun setTitle(text: String) {

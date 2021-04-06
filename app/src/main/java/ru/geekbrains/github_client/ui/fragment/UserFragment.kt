@@ -19,7 +19,6 @@ import ru.geekbrains.github_client.mvp.view.UserView
 import ru.geekbrains.github_client.ui.App
 import ru.geekbrains.github_client.ui.BackClickListener
 import ru.geekbrains.github_client.ui.adapter.ReposRVAdapter
-import ru.geekbrains.github_client.ui.navigation.AndroidScreens
 import ru.geekbrains.github_client.ui.network.AndroidNetworkStatus
 
 class UserFragment : MvpAppCompatFragment(), UserView, BackClickListener {
@@ -40,11 +39,11 @@ class UserFragment : MvpAppCompatFragment(), UserView, BackClickListener {
                 AndroidNetworkStatus(requireContext()),
                 RoomGithubRepositoriesCache(Database.getInstance())
             ),
-            App.instance.router,
             AndroidSchedulers.mainThread(),
             arguments?.get(USER) as GithubUser,
-            AndroidScreens()
-        )
+        ).apply {
+            App.instance.appComponent.inject(this)
+        }
     }
 
     private var vb: FragmentUserBinding? = null

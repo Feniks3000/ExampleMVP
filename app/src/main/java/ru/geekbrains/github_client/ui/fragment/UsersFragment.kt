@@ -8,18 +8,14 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.geekbrains.github_client.databinding.FragmentUsersBinding
-import ru.geekbrains.github_client.mvp.model.api.ApiHolder
-import ru.geekbrains.github_client.mvp.model.cache.room.RoomGithubUsersCache
 import ru.geekbrains.github_client.mvp.model.cache.room.RoomImageCache
 import ru.geekbrains.github_client.mvp.model.entity.room.db.Database
-import ru.geekbrains.github_client.mvp.model.repository.RetrofitGithubUsersRepo
 import ru.geekbrains.github_client.mvp.presenter.UsersPresenter
 import ru.geekbrains.github_client.mvp.view.UsersView
 import ru.geekbrains.github_client.ui.App
 import ru.geekbrains.github_client.ui.BackClickListener
 import ru.geekbrains.github_client.ui.adapter.UsersRVAdapter
 import ru.geekbrains.github_client.ui.image.GlideImageLoader
-import ru.geekbrains.github_client.ui.navigation.AndroidScreens
 import ru.geekbrains.github_client.ui.network.AndroidNetworkStatus
 
 class UsersFragment : MvpAppCompatFragment(), UsersView, BackClickListener {
@@ -30,12 +26,10 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackClickListener {
 
     private val presenter by moxyPresenter {
         UsersPresenter(
-            RetrofitGithubUsersRepo(
-                ApiHolder.api,
-                AndroidNetworkStatus(requireContext()),
-                RoomGithubUsersCache(Database.getInstance())
-            ), App.instance.router, AndroidScreens(), AndroidSchedulers.mainThread()
-        )
+            AndroidSchedulers.mainThread()
+        ).apply {
+            App.instance.appComponent.inject(this)
+        }
     }
 
     private var vb: FragmentUsersBinding? = null

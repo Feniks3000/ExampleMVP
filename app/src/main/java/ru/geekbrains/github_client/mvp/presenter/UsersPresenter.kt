@@ -5,19 +5,23 @@ import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import moxy.MvpPresenter
 import ru.geekbrains.github_client.mvp.model.entity.GithubUser
-import ru.geekbrains.github_client.mvp.model.repository.IGithubUsersRepo
 import ru.geekbrains.github_client.mvp.model.navigation.IScreens
+import ru.geekbrains.github_client.mvp.model.repository.IGithubUsersRepo
 import ru.geekbrains.github_client.mvp.presenter.list.IUsersListPresenter
 import ru.geekbrains.github_client.mvp.view.UsersView
 import ru.geekbrains.github_client.mvp.view.list.IUserItemView
+import javax.inject.Inject
 
-class UsersPresenter(
-    private val usersRepo: IGithubUsersRepo,
-    private val router: Router,
-    private val screens: IScreens,
-    private val mainThread: Scheduler
-) :
-    MvpPresenter<UsersView>() {
+class UsersPresenter(private val mainThread: Scheduler) : MvpPresenter<UsersView>() {
+
+    @Inject
+    lateinit var usersRepo: IGithubUsersRepo
+
+    @Inject
+    lateinit var screens: IScreens
+
+    @Inject
+    lateinit var router: Router
 
     class UsersListPresenter : IUsersListPresenter {
         val users = mutableListOf<GithubUser>()
