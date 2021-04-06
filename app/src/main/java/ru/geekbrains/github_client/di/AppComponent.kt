@@ -7,8 +7,9 @@ import ru.geekbrains.github_client.mvp.presenter.RepositoryPresenter
 import ru.geekbrains.github_client.mvp.presenter.UserPresenter
 import ru.geekbrains.github_client.mvp.presenter.UsersPresenter
 import ru.geekbrains.github_client.ui.activity.MainActivity
+import ru.geekbrains.github_client.ui.fragment.UserFragment
+import ru.geekbrains.github_client.ui.fragment.UsersFragment
 import javax.inject.Singleton
-
 
 @Singleton
 @Component(
@@ -22,6 +23,8 @@ import javax.inject.Singleton
 )
 interface AppComponent {
     fun inject(mainActivity: MainActivity)
+    fun inject(usersFragment: UsersFragment)
+    fun inject(userFragment: UserFragment)
     fun inject(mainPresenter: MainPresenter)
     fun inject(usersPresenter: UsersPresenter)
     fun inject(userPresenter: UserPresenter)

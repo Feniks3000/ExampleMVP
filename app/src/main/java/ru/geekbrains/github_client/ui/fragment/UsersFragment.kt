@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.geekbrains.github_client.databinding.FragmentUsersBinding
@@ -17,6 +17,8 @@ import ru.geekbrains.github_client.ui.BackClickListener
 import ru.geekbrains.github_client.ui.adapter.UsersRVAdapter
 import ru.geekbrains.github_client.ui.image.GlideImageLoader
 import ru.geekbrains.github_client.ui.network.AndroidNetworkStatus
+import javax.inject.Inject
+import javax.inject.Named
 
 class UsersFragment : MvpAppCompatFragment(), UsersView, BackClickListener {
 
@@ -25,15 +27,20 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackClickListener {
     }
 
     private val presenter by moxyPresenter {
-        UsersPresenter(
-            AndroidSchedulers.mainThread()
-        ).apply {
-            App.instance.appComponent.inject(this)
-        }
+        UsersPresenter().apply { App.instance.appComponent.inject(this) }
     }
+
+    @field:Named("ui")
+    @Inject
+    lateinit var uiScheduler: Scheduler
 
     private var vb: FragmentUsersBinding? = null
     private var adapter: UsersRVAdapter? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        App.instance.appComponent.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,8 +60,11 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackClickListener {
         adapter = UsersRVAdapter(
             presenter.usersListPresenter, GlideImageLoader(
                 AndroidNetworkStatus(requireContext()),
-                RoomImageCache(Database.getInstance(), App.instance.cacheDir),
-                AndroidSchedulers.mainThread()
+                RoomImageCache(
+                    Database.getInstance(),
+                    App.instance.cacheDir
+                ),
+                uiScheduler
             )
         )
         vb?.rvUsers?.adapter = adapter

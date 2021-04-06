@@ -9,7 +9,7 @@ import ru.geekbrains.github_client.mvp.model.entity.GithubUser
 import ru.geekbrains.github_client.mvp.model.entity.room.RoomGithubRepository
 import ru.geekbrains.github_client.mvp.model.entity.room.db.Database
 
-class RoomGithubRepositoriesCache(val db: Database) : IGithubRepositoriesCache {
+class RoomGithubRepositoriesCache(private val db: Database) : IGithubRepositoriesCache {
 
     override fun getUserRepositories(user: GithubUser) = Single.fromCallable {
         val roomUser = db.userDao.findByLogin(user.login) ?: throw RuntimeException("User is not exist in cache")

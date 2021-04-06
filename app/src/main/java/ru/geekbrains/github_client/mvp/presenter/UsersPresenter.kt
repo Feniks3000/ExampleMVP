@@ -11,8 +11,9 @@ import ru.geekbrains.github_client.mvp.presenter.list.IUsersListPresenter
 import ru.geekbrains.github_client.mvp.view.UsersView
 import ru.geekbrains.github_client.mvp.view.list.IUserItemView
 import javax.inject.Inject
+import javax.inject.Named
 
-class UsersPresenter(private val mainThread: Scheduler) : MvpPresenter<UsersView>() {
+class UsersPresenter() : MvpPresenter<UsersView>() {
 
     @Inject
     lateinit var usersRepo: IGithubUsersRepo
@@ -22,6 +23,10 @@ class UsersPresenter(private val mainThread: Scheduler) : MvpPresenter<UsersView
 
     @Inject
     lateinit var router: Router
+
+    @field:Named("ui")
+    @Inject
+    lateinit var uiScheduler: Scheduler
 
     class UsersListPresenter : IUsersListPresenter {
         val users = mutableListOf<GithubUser>()
@@ -54,7 +59,7 @@ class UsersPresenter(private val mainThread: Scheduler) : MvpPresenter<UsersView
     fun loadData() {
         usersListPresenter.users.clear()
         val disposable = usersRepo.getUsers()
-            .observeOn(mainThread)
+            .observeOn(uiScheduler)
             .subscribe({ users ->
                 usersListPresenter.users.addAll(users)
                 viewState.updateList()

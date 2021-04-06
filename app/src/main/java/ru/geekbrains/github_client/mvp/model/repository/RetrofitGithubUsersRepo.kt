@@ -6,9 +6,9 @@ import ru.geekbrains.github_client.mvp.model.cache.IGithubUsersCache
 import ru.geekbrains.github_client.mvp.model.network.INetworkStatus
 
 class RetrofitGithubUsersRepo(
-    val api: IDataSource,
-    val networkStatus: INetworkStatus,
-    val cache: IGithubUsersCache
+    private val api: IDataSource,
+    private val networkStatus: INetworkStatus,
+    private val cache: IGithubUsersCache
 ) : IGithubUsersRepo {
 
     override fun getUsers() = networkStatus.isOnlineSingle().flatMap { isOnline ->

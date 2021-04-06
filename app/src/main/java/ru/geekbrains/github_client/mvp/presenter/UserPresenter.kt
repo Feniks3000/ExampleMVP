@@ -12,9 +12,9 @@ import ru.geekbrains.github_client.mvp.presenter.list.IRepositoryListPresenter
 import ru.geekbrains.github_client.mvp.view.UserView
 import ru.geekbrains.github_client.mvp.view.list.IRepositoryItemView
 import javax.inject.Inject
+import javax.inject.Named
 
 class UserPresenter(
-    private val mainThread: Scheduler,
     private val user: GithubUser
 ) :
     MvpPresenter<UserView>() {
@@ -27,6 +27,10 @@ class UserPresenter(
 
     @Inject
     lateinit var repositoriesRepo: IGithubRepositoriesRepo
+
+    @field:Named("ui")
+    @Inject
+    lateinit var uiScheduler: Scheduler
 
     class RepositoriesListPresenter : IRepositoryListPresenter {
         val repositories = mutableListOf<GithubRepository>()
@@ -63,7 +67,7 @@ class UserPresenter(
     fun loadData() {
         repositoriesListPresenter.repositories.clear()
         val disposable = repositoriesRepo.getRepositories(user)
-            .observeOn(mainThread)
+            .observeOn(uiScheduler)
             .subscribe({ repos ->
                 repositoriesListPresenter.repositories.addAll(repos)
                 viewState.updateList()

@@ -28,12 +28,8 @@ class UserFragment : MvpAppCompatFragment(), UserView, BackClickListener {
     }
 
     private val presenter by moxyPresenter {
-        UserPresenter(
-            AndroidSchedulers.mainThread(),
-            arguments?.get(USER) as GithubUser,
-        ).apply {
-            App.instance.appComponent.inject(this)
-        }
+        UserPresenter(arguments?.get(USER) as GithubUser)
+            .apply { App.instance.appComponent.inject(this) }
     }
 
     private var vb: FragmentUserBinding? = null
