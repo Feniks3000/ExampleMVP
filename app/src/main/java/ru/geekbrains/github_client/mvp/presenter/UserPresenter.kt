@@ -14,10 +14,7 @@ import ru.geekbrains.github_client.mvp.view.list.IRepositoryItemView
 import javax.inject.Inject
 import javax.inject.Named
 
-class UserPresenter(
-    private val user: GithubUser
-) :
-    MvpPresenter<UserView>() {
+class UserPresenter(private val user: GithubUser) : MvpPresenter<UserView>() {
 
     @Inject
     lateinit var router: Router

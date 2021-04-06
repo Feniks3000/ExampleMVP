@@ -6,8 +6,7 @@ import ru.geekbrains.github_client.mvp.model.entity.GithubRepository
 import ru.geekbrains.github_client.mvp.view.RepositoryView
 import javax.inject.Inject
 
-class RepositoryPresenter(private val githubRepository: GithubRepository) :
-    MvpPresenter<RepositoryView>() {
+class RepositoryPresenter(private val githubRepository: GithubRepository) : MvpPresenter<RepositoryView>() {
 
     @Inject
     lateinit var router: Router

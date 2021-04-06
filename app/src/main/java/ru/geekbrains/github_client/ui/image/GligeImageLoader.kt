@@ -10,11 +10,11 @@ import com.bumptech.glide.request.target.Target
 import io.reactivex.rxjava3.core.Scheduler
 import ru.geekbrains.github_client.mvp.model.cache.IImageCache
 import ru.geekbrains.github_client.mvp.model.image.IImageLoader
-import ru.geekbrains.github_client.ui.network.AndroidNetworkStatus
+import ru.geekbrains.github_client.mvp.model.network.INetworkStatus
 import java.io.ByteArrayOutputStream
 
 class GlideImageLoader(
-    private val networkStatus: AndroidNetworkStatus,
+    private val networkStatus: INetworkStatus,
     private val cache: IImageCache,
     private val mainThread: Scheduler
 ) : IImageLoader<ImageView> {
