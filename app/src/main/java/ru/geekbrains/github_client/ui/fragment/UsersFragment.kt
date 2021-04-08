@@ -3,13 +3,11 @@ package ru.geekbrains.github_client.ui.fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.geekbrains.github_client.databinding.FragmentUsersBinding
-import ru.geekbrains.github_client.mvp.model.image.IImageLoader
 import ru.geekbrains.github_client.mvp.presenter.UsersPresenter
 import ru.geekbrains.github_client.mvp.view.UsersView
 import ru.geekbrains.github_client.ui.App
@@ -32,16 +30,8 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackClickListener {
     @Inject
     lateinit var uiScheduler: Scheduler
 
-    @Inject
-    lateinit var imagesRepo: IImageLoader<ImageView>
-
     private var vb: FragmentUsersBinding? = null
     private var adapter: UsersRVAdapter? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        App.instance.appComponent.inject(this)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,7 +48,9 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackClickListener {
 
     override fun init() {
         vb?.rvUsers?.layoutManager = LinearLayoutManager(requireContext())
-        adapter = UsersRVAdapter(presenter.usersListPresenter, imagesRepo)
+        adapter = UsersRVAdapter(presenter.usersListPresenter).apply {
+            App.instance.appComponent.inject(this)
+        }
         vb?.rvUsers?.adapter = adapter
     }
 
