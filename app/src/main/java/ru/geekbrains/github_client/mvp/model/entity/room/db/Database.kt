@@ -24,9 +24,11 @@ abstract class Database : RoomDatabase() {
     abstract val imageDao: IImageDao
 
     companion object {
-        private const val DB_NAME = "database.db"
+        const val DB_NAME = "database.db"
         private var instance: Database? = null
+
         fun getInstance() = instance ?: throw IllegalStateException("Database has not been created")
+
         fun create(context: Context) {
             if (instance == null) {
                 instance = Room.databaseBuilder(context, Database::class.java, DB_NAME).build()

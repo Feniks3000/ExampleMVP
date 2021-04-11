@@ -8,7 +8,7 @@ import ru.geekbrains.github_client.mvp.model.entity.GithubUser
 import ru.geekbrains.github_client.mvp.model.entity.room.RoomGithubUser
 import ru.geekbrains.github_client.mvp.model.entity.room.db.Database
 
-class RoomGithubUsersCache(val db: Database) : IGithubUsersCache {
+class RoomGithubUsersCache(private val db: Database) : IGithubUsersCache {
 
     override fun getUsers() = Single.fromCallable {
         db.userDao.getAll().map { roomUser ->

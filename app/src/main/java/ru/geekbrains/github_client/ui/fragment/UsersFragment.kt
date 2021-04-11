@@ -4,23 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.geekbrains.github_client.databinding.FragmentUsersBinding
-import ru.geekbrains.github_client.mvp.model.api.ApiHolder
-import ru.geekbrains.github_client.mvp.model.cache.room.RoomGithubUsersCache
-import ru.geekbrains.github_client.mvp.model.cache.room.RoomImageCache
-import ru.geekbrains.github_client.mvp.model.entity.room.db.Database
-import ru.geekbrains.github_client.mvp.model.repository.RetrofitGithubUsersRepo
 import ru.geekbrains.github_client.mvp.presenter.UsersPresenter
 import ru.geekbrains.github_client.mvp.view.UsersView
 import ru.geekbrains.github_client.ui.App
 import ru.geekbrains.github_client.ui.BackClickListener
 import ru.geekbrains.github_client.ui.adapter.UsersRVAdapter
-import ru.geekbrains.github_client.ui.image.GlideImageLoader
-import ru.geekbrains.github_client.ui.navigation.AndroidScreens
-import ru.geekbrains.github_client.ui.network.AndroidNetworkStatus
+import javax.inject.Inject
+import javax.inject.Named
 
 class UsersFragment : MvpAppCompatFragment(), UsersView, BackClickListener {
 
@@ -29,14 +23,12 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackClickListener {
     }
 
     private val presenter by moxyPresenter {
-        UsersPresenter(
-            RetrofitGithubUsersRepo(
-                ApiHolder.api,
-                AndroidNetworkStatus(requireContext()),
-                RoomGithubUsersCache(Database.getInstance())
-            ), App.instance.router, AndroidScreens(), AndroidSchedulers.mainThread()
-        )
+        UsersPresenter().apply { App.instance.appComponent.inject(this) }
     }
+
+    @field:Named("ui")
+    @Inject
+    lateinit var uiScheduler: Scheduler
 
     private var vb: FragmentUsersBinding? = null
     private var adapter: UsersRVAdapter? = null
@@ -56,13 +48,9 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackClickListener {
 
     override fun init() {
         vb?.rvUsers?.layoutManager = LinearLayoutManager(requireContext())
-        adapter = UsersRVAdapter(
-            presenter.usersListPresenter, GlideImageLoader(
-                AndroidNetworkStatus(requireContext()),
-                RoomImageCache(Database.getInstance(), App.instance.cacheDir),
-                AndroidSchedulers.mainThread()
-            )
-        )
+        adapter = UsersRVAdapter(presenter.usersListPresenter).apply {
+            App.instance.appComponent.inject(this)
+        }
         vb?.rvUsers?.adapter = adapter
     }
 

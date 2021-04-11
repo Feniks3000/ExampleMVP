@@ -12,7 +12,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
 
-class RoomImageCache(val db: Database, val dir: File) : IImageCache {
+class RoomImageCache(private val db: Database, private val dir: File) : IImageCache {
 
     override fun getImage(url: String) = Maybe.fromCallable {
         db.imageDao.findByUrl(url)?.let {
@@ -46,6 +46,4 @@ class RoomImageCache(val db: Database, val dir: File) : IImageCache {
         db.imageDao.clear()
         dir.deleteRecursively()
     }.subscribeOn(Schedulers.io())
-
-
 }
